@@ -2,7 +2,7 @@
 #include <vector>
 #include <string>
 #include <cassert>
-//commit with failed test
+
 struct TimetableEntry {
     std::string course;
     std::string room;
