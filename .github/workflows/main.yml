@@ -6,6 +6,6 @@ jobs:
     steps:
       - uses: actions/checkout@v3
       - name: Compile Program
-        run: g++ -o test main.cpp
+        run: g++ -o test test.cpp
       - name: Run Tests
         run: ./test.exe
