@@ -11,16 +11,21 @@ struct TimetableEntry {
 
 std::vector<TimetableEntry> timetable;
 
-// Ab pura implementation
-bool CreateTimetableEntry(std::string course, std::string room, std::string time) {
+bool IsConflict(std::string room, std::string time) {
     for (auto& entry : timetable) {
         if (entry.room == room && entry.time == time) {
-            std::cout << "Conflict Error: Room already booked at this time!\n";
-            return false;
+            return true;
         }
     }
-    TimetableEntry newEntry = { course, room, time };
-    timetable.push_back(newEntry);
+    return false;
+}
+
+bool CreateTimetableEntry(std::string course, std::string room, std::string time) {
+    if (IsConflict(room, time)) {
+        std::cout << "Conflict Error: Room already booked at this time!\n";
+        return false;
+    }
+    timetable.push_back({ course, room, time });
     return true;
 }
 
