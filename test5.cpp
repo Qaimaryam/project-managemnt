@@ -21,7 +21,14 @@ string* disabledStudentIds = new string[50];
 string* disabledTypesArr = new string[50];
 int disabledCount = 0;
 
+// Function declaration
+bool WillReceiveNotification(string userId, string type);
+
 void NotifyUser(string userId, string notificationType, string notificationMessage) {
+    if (!WillReceiveNotification(userId, notificationType)) {
+        return;
+    }
+
     inbox[inboxCount].userId = userId;
     inbox[inboxCount].type = notificationType;
     inbox[inboxCount].message = notificationMessage;
@@ -49,6 +56,7 @@ bool CheckAndSendReminder(string facultyId, int minutesUntilClass) {
         NotifyUser(facultyId, "Reminder", "You have a class in 15 minutes");
         return true;
     }
+
     return false;
 }
 
@@ -56,26 +64,33 @@ bool DisableNotificationType(string studentId, string type) {
     disabledStudentIds[disabledCount] = studentId;
     disabledTypesArr[disabledCount] = type;
     disabledCount++;
+
     return true;
 }
 
 bool WillReceiveNotification(string userId, string type) {
     for (int i = 0; i < disabledCount; i++) {
-        if (disabledStudentIds[i] == userId && disabledTypesArr[i] == type) {
+        if (disabledStudentIds[i] == userId &&
+            disabledTypesArr[i] == type) {
             return false;
         }
     }
+
     return true;
 }
 
 void TestDisableNotification_StopsReceiving() {
     DisableNotificationType("Ali", "Announcement");
+
     bool willReceive = WillReceiveNotification("Ali", "Announcement");
+
     assert(willReceive == false);
-    cout << "TestDisableNotification_StopsReceiving PASSED\n";
+
+    cout << "TestDisableNotification_StopsReceiving PASSED" << endl;
 }
 
 int main() {
     TestDisableNotification_StopsReceiving();
+
     return 0;
 }
